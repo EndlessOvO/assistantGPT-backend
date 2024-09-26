@@ -30,3 +30,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### resource ###
+application-dev.yaml
+application-prod.yaml
