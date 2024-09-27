@@ -1,7 +1,10 @@
 server:
   port: 8080
+  servlet:
+    context-path: /api
 spring:
   application:
     name: assistant-gpt
+    version: @project.version@
   profiles:
     active: @profile.active@
