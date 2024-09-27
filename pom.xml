@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.endlessovo</groupId>
 	<artifactId>assistantGPT</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>assistantGPT</name>
 	<description>a GPT project by abin-members</description>
 	<url/>
