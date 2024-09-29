@@ -1,7 +1,9 @@
 package com.endlessovo.assistantGPT.common.config;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONReader;
 import com.alibaba.fastjson2.JSONWriter;
+import com.alibaba.fastjson2.filter.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 @SuppressWarnings({"squid:S2440"})
 public class RedisConfig {
+    private static final Filter autoTypeFilter = JSONReader.autoTypeFilter("com.endlessovo.assistantGPT");
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory connectionFactory) {
@@ -51,13 +54,14 @@ public class RedisConfig {
 
         @Override
         public byte[] serialize(T t) throws SerializationException {
+            if (t == null) return new byte[0];
             return JSON.toJSONBytes(t, JSONWriter.Feature.WriteClassName);
         }
 
         @Override
         public T deserialize(byte[] bytes) throws SerializationException {
             if (bytes == null || bytes.length == 0) return null;
-            return JSON.parseObject(bytes, clazz);
+            return JSON.parseObject(bytes, clazz, autoTypeFilter, JSONReader.Feature.FieldBased);
         }
     }
 }

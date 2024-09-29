@@ -1,9 +1,12 @@
 package com.endlessovo.assistantGPT.common.util;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import com.endlessovo.assistantGPT.common.exception.CustomException;
+import com.endlessovo.assistantGPT.common.exception.CustomExceptionEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -45,11 +48,9 @@ public class RedisUtil {
     }
 
     public static <T> T get(String key, Class<T> clazz) {
-        return (T) redisTemplate.opsForValue().get(key);
-    }
-
-    public static Object get(String key) {
-        return redisTemplate.opsForValue().get(key);
+         T t = (T) redisTemplate.opsForValue().get(key);
+         if (Objects.isNull(t)) throw new CustomException(CustomExceptionEnum.REDIS_NOT_EXIST);
+         return t;
     }
 
     public static boolean delete(String key) {
@@ -62,5 +63,9 @@ public class RedisUtil {
 
     public static void extendExpireTime(String key, long time, TimeUnit timeUnit) {
         set(key, get(key), time, timeUnit);
+    }
+
+    private static Object get(String key) {
+        return redisTemplate.opsForValue().get(key);
     }
 }

@@ -13,6 +13,9 @@ public enum CustomExceptionEnum {
     NO_PERMISSION_ERROR(403, "无权限访问"),
     CONTEXT_CATCH_ERROR(1001, "无法获取请求上下文"),
     DATASOURCE_ACCESS_ERROR(1002, "数据源访问异常"),
+    USER_NOT_EXIST(1003, "用户不存在"),
+    USER_EXIST(1004, "用户已经存在"),
+    REDIS_NOT_EXIST(1005, "Redis中不存在值"),
     ;
     private final Integer code;
     private final String message;

@@ -17,6 +17,13 @@ public class ResponseVO<T> {
 
     private ResponseVO() {}
 
+    public static <T> ResponseVO<T> success() {
+        return ResponseVO.<T>builder()
+                .code(HTTP_SUCCESS_CODE)
+                .message(HTTP_SUCCESS_MESSAGE)
+                .build();
+    }
+
     public static <T> ResponseVO<T> success(T data) {
         return ResponseVO.<T>builder()
                 .code(HTTP_SUCCESS_CODE)
