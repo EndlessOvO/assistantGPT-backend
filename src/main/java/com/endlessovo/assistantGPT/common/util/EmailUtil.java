@@ -42,6 +42,6 @@ public class EmailUtil {
                         这是您用于登录 Assistant GPT 的链接
                         如果您未请求此链接，您可以直接忽略此电子邮件。
                         点击下方链接登录："""
-                +"http://linux.do/api/email-login/" + credentials);
+                +"http://localhost:8080/api/email-login/" + credentials);
     }
 }
