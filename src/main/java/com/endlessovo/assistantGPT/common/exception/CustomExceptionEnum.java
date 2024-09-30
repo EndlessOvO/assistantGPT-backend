@@ -19,6 +19,7 @@ public enum CustomExceptionEnum {
     AUTHORIZATION_NOT_FOUND(1006, "请求头中未找到 Authorization"),
     LOGIN_EXPIRE(1007, "登录已过期，请重新登录"),
     USER_REPEAT_LOGIN(1008, "请勿重复登录"),
+    EMAIL_SEND_ERROR(1009, "邮件发送失败"),
     ;
     private final Integer code;
     private final String message;
