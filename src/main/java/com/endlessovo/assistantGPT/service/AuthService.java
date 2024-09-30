@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class AuthService {
     private final UserService userService;
 
-    private static final Integer LOGIN_CODE_EXPIRE_TIME_MINUTES = 60;
+    private static final Integer LOGIN_CODE_EXPIRE_TIME_MINUTES = 5;
 
     public UserLoginVO login(UserLoginQuery userLoginQuery) {
         checkRepeatLogin();
