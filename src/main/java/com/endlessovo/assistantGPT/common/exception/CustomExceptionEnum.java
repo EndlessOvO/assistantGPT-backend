@@ -16,6 +16,9 @@ public enum CustomExceptionEnum {
     USER_NOT_EXIST(1003, "用户不存在"),
     USER_EXIST(1004, "用户已经存在"),
     REDIS_NOT_EXIST(1005, "Redis中不存在值"),
+    AUTHORIZATION_NOT_FOUND(1006, "请求头中未找到 Authorization"),
+    LOGIN_EXPIRE(1007, "登录已过期，请重新登录"),
+    USER_REPEAT_LOGIN(1008, "请勿重复登录"),
     ;
     private final Integer code;
     private final String message;

@@ -1,7 +1,9 @@
 package com.endlessovo.assistantGPT.common.util;
 
+import com.endlessovo.assistantGPT.common.constant.CacheConstant;
 import com.endlessovo.assistantGPT.common.exception.CustomException;
 import com.endlessovo.assistantGPT.common.exception.CustomExceptionEnum;
+import com.endlessovo.assistantGPT.model.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.experimental.UtilityClass;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -14,6 +16,7 @@ import java.util.Optional;
  */
 @UtilityClass
 public class RequestContextUtil {
+    private static final String AUTHORIZATION = "Authorization";
 
     public Object getAttributeByRequestContextHolder(String attributeName) {
         return getServletRequest().getAttribute(attributeName);
@@ -44,5 +47,20 @@ public class RequestContextUtil {
                 Optional.ofNullable(RequestContextHolder.getRequestAttributes())
                         .orElseThrow(() -> new CustomException(CustomExceptionEnum.CONTEXT_CATCH_ERROR)))
                 .getRequest();
+    }
+
+    public static String getAuthorization() {
+        HttpServletRequest request = getServletRequest();
+        return Optional.ofNullable(request.getHeader(AUTHORIZATION))
+                .orElseThrow(() -> new CustomException(CustomExceptionEnum.AUTHORIZATION_NOT_FOUND));
+    }
+
+    /**
+     * 获取当前用户
+     * @return User
+     */
+    public static User getCurrentUser() {
+        String authorization = getAuthorization();
+        return RedisUtil.get(CacheConstant.TOKEN_PREFIX + authorization, User.class);
     }
 }

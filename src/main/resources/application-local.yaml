@@ -11,3 +11,24 @@ spring:
     url: jdbc:mysql://localhost:3306/assistant_gpt?useSSL=false&serverTimezone=UTC
     username: username
     password: password
+  mail:
+    host: smtp.xx.com # 邮箱服务器
+    protocol: smtp
+    port: 1234         # 端口
+    username: example@example.com # 邮箱账号
+    password: tHisiSAcoDe  # 邮箱授权码
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+jwt:
+  issuer: example
+  secret: example
+  white-list:
+    - /api/auth/login
+    - /api/auth/register
+    - /api/auth/send-login-email
+    - /email-login/*
