@@ -56,7 +56,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             response(ResponseVO.fail(CustomExceptionEnum.LOGIN_EXPIRE), response);
             return;
         }
-        if (!RedisUtil.exist(token)) {
+        if (!RedisUtil.exist(CacheConstant.TOKEN_PREFIX + token)) {
             response(ResponseVO.fail(CustomExceptionEnum.LOGIN_EXPIRE), response);
             return;
         }

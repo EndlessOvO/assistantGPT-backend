@@ -13,6 +13,7 @@ import com.endlessovo.assistantGPT.model.vo.user.UserRegisterQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -47,12 +48,8 @@ public class AuthService {
     public UserLoginVO login(String credentials) {
         checkRepeatLogin();
 //        1. 从 redis 中获取 登录凭证
-        User user;
-        try {
-            user = RedisUtil.get(CacheConstant.LOGIN_CREDENTIALS_PREFIX + credentials, User.class);
-        } catch (CustomException e) {
-            throw new CustomException(CustomExceptionEnum.USER_NOT_EXIST);
-        }
+        User user = RedisUtil.get(CacheConstant.LOGIN_CREDENTIALS_PREFIX + credentials, User.class);
+        if (Objects.isNull(user)) throw new CustomException(CustomExceptionEnum.USER_NOT_EXIST);
 //        2. 生成 token
         String token = JWTUtil.generateToken(user.getEmail());
 //        3. 缓存 用户信息
@@ -98,15 +95,30 @@ public class AuthService {
     }
 
     /**
+     * 用户登出
+     */
+    public void logout() {
+//        检查是否已登录
+        User user = RequestContextUtil.getCurrentUser();
+        if (Objects.isNull(user)) throw new CustomException(CustomExceptionEnum.USER_UNLOGIN_ERROR);
+//        删除 Redis 内保存的用户信息
+        RedisUtil.delete(CacheConstant.TOKEN_PREFIX + RequestContextUtil.getAuthorization());
+    }
+
+    /**
+     * 用户注销
+     */
+    public void logoff() {
+        User user = RequestContextUtil.getCurrentUser();
+        if (Objects.isNull(user)) throw new CustomException(CustomExceptionEnum.USER_UNLOGIN_ERROR);
+        userService.removeById(user.getId());
+    }
+
+    /**
      * 避免重复登录
      */
-    public void checkRepeatLogin() {
-        try {
-            RequestContextUtil.getCurrentUser();
-        } catch (CustomException e) {
-//            用户未登录 - 直接放行
-            return;
-        }
-        throw new CustomException(CustomExceptionEnum.USER_REPEAT_LOGIN);
+    private void checkRepeatLogin() {
+        User user = RequestContextUtil.getCurrentUser();
+        if (Objects.nonNull(user)) throw new CustomException(CustomExceptionEnum.USER_REPEAT_LOGIN);
     }
 }

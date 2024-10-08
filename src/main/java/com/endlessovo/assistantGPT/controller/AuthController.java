@@ -53,4 +53,16 @@ public class AuthController {
         authService.register(userRegisterQuery);
         return ResponseVO.success();
     }
+
+    @GetMapping("/logout")
+    public ResponseVO<Void> logout() {
+        authService.logout();
+        return ResponseVO.success();
+    }
+
+    @GetMapping("/logoff")
+    public ResponseVO<Void> logoff() {
+        authService.logoff();
+        return ResponseVO.success();
+    }
 }

@@ -48,9 +48,7 @@ public class RedisUtil {
     }
 
     public static <T> T get(String key, Class<T> clazz) {
-         T t = (T) redisTemplate.opsForValue().get(key);
-         if (Objects.isNull(t)) throw new CustomException(CustomExceptionEnum.REDIS_NOT_EXIST);
-         return t;
+         return (T) redisTemplate.opsForValue().get(key);
     }
 
     public static boolean delete(String key) {

@@ -1,7 +1,6 @@
 package com.endlessovo.assistantGPT.model.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.*;
 
@@ -14,6 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @TableName("user")
 public class User extends Model<User> {
+    @TableId(type = IdType.AUTO)
     private Integer id;
     private String name;
     private String email;
@@ -26,4 +26,7 @@ public class User extends Model<User> {
     private LocalDateTime createTime;
     @TableField("update_time")
     private LocalDateTime updateTime;
+    @TableLogic(value = "0", delval = "1")
+    @TableField("delete_flag")
+    private Boolean deleteFlag;
 }

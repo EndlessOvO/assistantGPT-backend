@@ -60,7 +60,13 @@ public class RequestContextUtil {
      * @return User
      */
     public static User getCurrentUser() {
-        String authorization = getAuthorization();
+        String authorization;
+        try {
+            authorization = getAuthorization();
+        } catch (CustomException e) {
+//            不存在请求头就认为是匿名用户
+            return null;
+        }
         return RedisUtil.get(CacheConstant.TOKEN_PREFIX + authorization, User.class);
     }
 }
